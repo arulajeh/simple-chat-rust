@@ -1,6 +1,7 @@
-use std::borrow::Cow;
+use ammonia::Builder;
 use futures_util::{stream::StreamExt, SinkExt};
 use http::Response;
+use std::borrow::Cow;
 use std::collections::{HashMap, HashSet};
 use std::sync::{Arc, Mutex};
 use tokio::net::TcpListener;
@@ -9,14 +10,13 @@ use tokio_tungstenite::accept_hdr_async;
 use tokio_tungstenite::tungstenite::handshake::server::Request;
 use tokio_tungstenite::tungstenite::Message;
 use url::form_urlencoded;
-use ammonia::{clean, Builder};
 use urlencoding::decode;
 
 type PeerMap = Arc<Mutex<HashMap<String, broadcast::Sender<String>>>>;
 
 #[tokio::main]
 async fn main() {
-    let addr = "127.0.0.1:8080";
+    let addr = "0.0.0.0:8080";
     let listener = TcpListener::bind(addr).await.expect("Failed to bind");
     println!("WebSocket server is running on ws://{}", addr);
 
